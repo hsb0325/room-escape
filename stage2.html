@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>방탈출 게임 - 스테이지 2: 산업혁명</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Malgun Gothic', sans-serif;
+        }
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://github.com/hsb0325/test_/blob/main/Whisk_1433468be1.jpg?raw=true');
+            background-color: #333;
+            background-size: cover;
+            background-position: center;
+        }
+        .clickable {
+            position: absolute;
+            cursor: pointer;
+            background-color: transparent;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+        }
+        .clickable:hover {
+            background-color: rgba(255, 255, 0, 0.2);
+            border-color: rgba(255, 255, 0, 0.5);
+            box-shadow: 0 0 25px 10px rgba(255, 255, 120, 0.7);
+        }
+
+        /* --- 오브젝트 위치 (이전과 동일) --- */
+        #main-machine { top: 25%; left: 45%; width: 40%; height: 50%; } /* 퀴즈 */
+        #front-worker { top: 44%; left: 8%; width: 25%; height: 55%; } /* 힌트 1 */
+        #floor-boxes { top: 80%; left: 5%; width: 72%; height: 20%; } /* 힌트 2 */
+        #skylight-exit { top: 0; left: 10%; width: 80%; height: 20%; } /* 탈출구 */
+
+        /* --- 모달 창 스타일 (이전과 동일) --- */
+        .modal {
+            display: none; 
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content { background-color: #ffffff; padding: 30px; border: 1px solid #888; width: 90%; max-width: 450px; text-align: center; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .modal-content h2 { margin-bottom: 20px; }
+        .modal-content input { width: 80%; padding: 10px; font-size: 1.2em; margin-bottom: 20px; text-align: center; }
+        .modal-content button { padding: 10px 25px; font-size: 1.1em; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <div id="main-machine" class="clickable"></div>
+    <div id="front-worker" class="clickable"></div>
+    <div id="floor-boxes" class="clickable"></div>
+    <div id="skylight-exit" class="clickable"></div>
+</div>
+
+<div id="password-modal" class="modal">
+    <div class="modal-content">
+        <h2>공장을 나갈 방법을 찾아야 해...</h2>
+        <input type="text" id="password-input" placeholder="4자리 숫자" inputmode="numeric" pattern="[0-9]*" maxlength="4">
+        <button id="submit-password">확인</button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // 비밀번호: 7388
+        // [수정] 힌트 내용 재배치
+        const hints = {
+            "quiz": "첫 번째 숫자는 7이다.",
+            "worker": "두 번째 숫자는 3이다.",
+            "boxes": "세 번째 비밀번호와 네 번째 비밀번호는 8이다."
+        };
+
+        // 거대 기계 (퀴즈) 클릭 이벤트
+        document.getElementById('main-machine').addEventListener('click', () => {
+            const answer = prompt("퀴즈: 증기기관을 벗어나 새로운 핵심 에너지원으로 사용된 것은 무엇일까요?");
+            if (answer && answer.trim() === "전기") {
+                // [수정] 힌트 내용 변경
+                alert(`정답이다! 기계 어딘가에 ' ${hints.quiz} ' 라고 쓰여있다.`);
+            } else {
+                alert("아닌 것 같다. 다시 생각해보자.");
+            }
+        });
+
+        // 작업자 클릭 이벤트
+        document.getElementById('front-worker').addEventListener('click', () => alert(`작업자가 무언가 중얼거린다. '...${hints.worker}...'`));
+        
+        // 바닥의 상자들 클릭 이벤트
+        document.getElementById('floor-boxes').addEventListener('click', () => {
+            // [수정] 요청하신 힌트 메시지로 변경
+            alert(`바닥의 상자들 틈에서 쪽지를 발견했다. '${hints.boxes}'`);
+        });
+
+        // 창문(탈출구) 클릭 시 비밀번호 모달 표시
+        document.getElementById('skylight-exit').addEventListener('click', () => {
+            document.getElementById('password-modal').style.display = 'flex';
+            document.getElementById('password-input').focus();
+        });
+
+        // 비밀번호 제출 이벤트
+        document.getElementById('submit-password').addEventListener('click', () => {
+            const password = document.getElementById('password-input').value;
+            if (password === "7388") {
+                alert("창문이 열린다! 다음 시대로 넘어가는 건가...?");
+                // 실제 플레이 시 아래 코드의 주석을 해제하여 다음 스테이지로 연결하세요.
+                // window.location.href = "stage3.html"; 
+            } else {
+                alert("꿈쩍도 하지 않는다. 비밀번호가 다른가?");
+                document.getElementById('password-input').value = "";
+            }
+        });
+
+        // 모달 창 바깥 영역 클릭 시 모달 닫기
+        window.addEventListener('click', (event) => {
+            const modal = document.getElementById('password-modal');
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

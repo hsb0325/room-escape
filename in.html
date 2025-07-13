@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>세계 역사 방탈출 : 시작</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-family: 'Malgun Gothic', sans-serif;
+            background-color: #333;
+            color: white;
+        }
+        #intro-container {
+            text-align: center;
+            padding: 40px;
+            border-radius: 15px;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 80%;
+            max-width: 300px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            margin-top: 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div id="intro-container">
+    <h1>세계 역사 방탈출</h1>
+    <p>역사 책 속으로 빨려 들어갔습니다.<br>각 시대의 문제를 해결하고 현실 세계로 탈출하세요.</p>
+    <input type="text" id="player-name" placeholder="당신의 이름은?">
+    <br>
+    <button id="start-game">게임 시작</button>
+</div>
+
+<script>
+    document.getElementById('start-game').addEventListener('click', () => {
+        const playerName = document.getElementById('player-name').value;
+        if (playerName.trim() === "") {
+            alert("이름을 입력해주세요!");
+            return;
+        }
+        // 이름을 저장하고 다음 스테이지로 넘어갑니다.
+        localStorage.setItem('playerName', playerName);
+        window.location.href = "stage1.html";
+    });
+</script>
+
+</body>
+</html>
